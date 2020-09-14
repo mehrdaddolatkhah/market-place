@@ -10,6 +10,7 @@ import (
 
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/business"
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/repository"
+	routes "github.com/mehrdaddolatkhah/cafekala_server/pkg/transport/rest/routes"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -26,6 +27,7 @@ func RouteHandler(client *mongo.Client) http.Handler {
 	})
 
 	var tokenAuth *jwtauth.JWTAuth
+	tokenAuth = jwtauth.New("HS256", []byte("secret"), nil)
 	// define a new admin handler and repository
 	adminRepo := repository.NewAdminRepo(client)
 	adminHandler := business.NewAdminHandler(adminRepo)
@@ -38,6 +40,10 @@ func RouteHandler(client *mongo.Client) http.Handler {
 	marketRepo := repository.NewMarketRepo(client)
 	marketHandler := business.NewMarketHandler(marketRepo)
 
+	// define a new market handler and repository
+	authRepo := repository.NewAuthRepo(client)
+	authHandler := business.NewAuthHandler(authRepo)
+
 	router := chi.NewRouter()
 
 	router.Use(cors.Handler)
@@ -45,21 +51,24 @@ func RouteHandler(client *mongo.Client) http.Handler {
 
 	// Protected routes
 	router.Group(func(r chi.Router) {
-		r.Use(jwtauth.Verifier(tokenAuth))
 
+		r.Use(jwtauth.Verifier(tokenAuth))
 		r.Use(jwtauth.Authenticator)
 
-		AdminRestAPI(router, adminHandler)
-		UserRestAPI(router, userHandler)
-		MarketRestAPI(router, marketHandler)
+		// Mount the admin sub-router
+		r.Mount("/api/v1/admin", routes.AdminRouter(router, adminHandler))
+
+		// Mount the market sub-router
+		r.Mount("/api/v1/market", routes.MarketRouter(router, marketHandler))
+
+		// Mount the user sub-router
+		r.Mount("/api/v1/user", routes.UserRouter(router, userHandler))
 
 	})
 
 	// Public routes
 	router.Group(func(r chi.Router) {
-		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("welcome anonymous"))
-		})
+		r.Mount("/api/v1", routes.PublicRouter(router, authHandler))
 	})
 
 	return router

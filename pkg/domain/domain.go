@@ -52,3 +52,8 @@ type CategoryRepository interface {
 	FindByID(ID int) (*user.User, error)
 	Save(user *user.User) error
 }
+
+type AuthRepository interface {
+	Login(phone string) (string, error)
+	Verify(phone string, code string) (*user.User, error)
+}

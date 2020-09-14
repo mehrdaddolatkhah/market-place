@@ -5,8 +5,8 @@ import (
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/business"
 )
 
-// UserRestAPI : handle all user routes
-func UserRestAPI(router *chi.Mux, userHandler *business.UserHandler) *chi.Mux {
+// UserRouter : handle all user routes
+func UserRouter(router chi.Router, userHandler *business.UserHandler) chi.Router {
 
 	router.Get("/api/v1/user", userHandler.HelloUser)
 
