@@ -31,14 +31,16 @@ func init() {
 func (authHandler *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 
 	phone := r.FormValue("phone")
-	fmt.Println(phone)
+
+	if phone == "" {
+		w.Write([]byte(fmt.Sprintf("enter phone")))
+		return
+	}
+
 	if user, err := authHandler.authRepo.Login(phone); err != nil {
 		fmt.Println("Error", user)
 	}
 
-	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 123123})
-	fmt.Println(tokenString)
-	w.Write([]byte(fmt.Sprintf("token %v \n", tokenString)))
 	w.Write([]byte(fmt.Sprintf("phone %v \n", phone)))
 }
 
@@ -48,13 +50,21 @@ func (authHandler *AuthHandler) Verify(w http.ResponseWriter, r *http.Request) {
 	phone := r.FormValue("phone")
 	code := r.FormValue("code")
 
+	if phone == "" || code == "" {
+		w.Write([]byte(fmt.Sprintf("enter phone and code")))
+		return
+
+	}
+
 	if user, err := authHandler.authRepo.Login(phone); err != nil {
 		fmt.Println("Error", user)
 	}
 
-	w.Write([]byte(fmt.Sprintf("phone %v \n", phone)))
-	w.Write([]byte(fmt.Sprintf("code %v \n", code)))
-	_, claims, _ := jwtauth.FromContext(r.Context())
-	fmt.Println(claims["user_id"])
-	w.Write([]byte(fmt.Sprintf("phone in token %v", claims["user_id"])))
+	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 123})
+
+	w.Write([]byte(fmt.Sprintf("token %v \n", tokenString)))
+
+	// encodedToken := utils.TokenExtractor(jwtauth.TokenFromHeader(r))
+	// w.Write([]byte(fmt.Sprintf("token %v \n", encodedToken)))
+
 }
