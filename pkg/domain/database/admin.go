@@ -6,7 +6,6 @@ import (
 
 const ADMIN_COLLECTION string = "admin"
 
-// Admin defines the storage form of a beer
 type Admin struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty" json:"-"`
 	Phone     string             `bson:"phone,omitempty" json:"phone"`

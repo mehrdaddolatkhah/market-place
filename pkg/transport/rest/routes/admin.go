@@ -10,7 +10,6 @@ import (
 // AdminRouter todo : change it later. useless
 // AdminRouter : handle all admin routes
 func AdminRouter(router chi.Router, adminHandler *business.AdminHandler) http.Handler {
-	router.Get("/hello", adminHandler.AdminLogin)
-	router.Post("/register", adminHandler.AdminRegister)
+	router.Get("/hello", adminHandler.AdminRegister)
 	return router
 }

@@ -51,6 +51,7 @@ func (handler *AdminHandler) AdminLogin(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	fmt.Println("we are in login admin")
 	handler.adminRepo.AdminLogin(username, password)
 
 	encodedToken := utils.TokenExtractor(jwtauth.TokenFromHeader(r))
