@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/jwtauth"
+	"github.com/mehrdaddolatkhah/cafekala_server/pkg/business/utils"
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain"
 )
 
@@ -22,11 +23,6 @@ func NewAdminHandler(adminRepo domain.AdminRepository) *AdminHandler {
 
 // HelloAdmin returns Hello, World
 func (h *AdminHandler) HelloAdmin(w http.ResponseWriter, r *http.Request) {
-	if user, err := h.adminRepo.FindByID(1); err != nil {
-		fmt.Println("Error", user)
-	}
-	_, claims, _ := jwtauth.FromContext(r.Context())
-	w.Write([]byte(fmt.Sprintf("protected area. hi %v", claims["user_id"])))
-
-	w.Write([]byte("Hello, Admin"))
+	encodedToken := utils.TokenExtractor(jwtauth.TokenFromHeader(r))
+	w.Write([]byte(fmt.Sprintf("data %v \n", encodedToken)))
 }

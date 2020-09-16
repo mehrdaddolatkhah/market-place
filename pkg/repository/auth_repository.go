@@ -1,8 +1,7 @@
 package repository
 
 import (
-	"os/user"
-
+	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain/database"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -24,6 +23,6 @@ func (r *AuthRepo) Login(phone string) (string, error) {
 }
 
 // Verify ..
-func (r *AuthRepo) Verify(phone string, code string) (*user.User, error) {
+func (r *AuthRepo) Verify(phone string, code string) (*database.User, error) {
 	return nil, nil
 }

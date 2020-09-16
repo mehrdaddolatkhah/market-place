@@ -1,8 +1,7 @@
 package repository
 
 import (
-	"os/user"
-
+	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain/database"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -18,12 +17,13 @@ func NewMarketRepo(db *mongo.Client) *MarketRepo {
 	}
 }
 
-// FindByID ..
-func (r *MarketRepo) FindByID(ID int) (*user.User, error) {
-	return &user.User{}, nil
+// MarketerLogin ...
+func (r *MarketRepo) MarketerLogin(phone string) (string, error) {
+
+	return "", nil
 }
 
-// Save ..
-func (r *MarketRepo) Save(user *user.User) error {
-	return nil
+// MarketerVerify ...
+func (r *MarketRepo) MarketerVerify(phone string, code string) (*database.Market, error) {
+	return nil, nil
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/go-chi/jwtauth"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain"
 )
 
@@ -20,15 +20,40 @@ func NewMarketHandler(marketRepo domain.MarketRepository) *MarketHandler {
 	}
 }
 
-// HelloMarket returns Hello, World
-func (h *MarketHandler) HelloMarket(w http.ResponseWriter, r *http.Request) {
-	if user, err := h.marketRepo.FindByID(1); err != nil {
+// MarketerLogin , in this function we hanlde send sms process for marketer
+func (marketHandler *MarketHandler) MarketerLogin(w http.ResponseWriter, r *http.Request) {
+
+	phone := r.FormValue("phone")
+
+	if phone == "" {
+		w.Write([]byte(fmt.Sprintf("enter phone")))
+		return
+	}
+
+	if user, err := marketHandler.marketRepo.MarketerLogin(phone); err != nil {
 		fmt.Println("Error", user)
 	}
 
-	_, claims, _ := jwtauth.FromContext(r.Context())
-	fmt.Println(jwtauth.FromContext(r.Context()))
-	w.Write([]byte(fmt.Sprintf("protected area. hi %v", claims["user_id"])))
+	w.Write([]byte(fmt.Sprintf("phone %v \n", phone)))
+}
 
-	w.Write([]byte("Hello, Market"))
+// MarketerVerify , in this function we hanlde check OTP process for marketer
+func (marketHandler *MarketHandler) MarketerVerify(w http.ResponseWriter, r *http.Request) {
+
+	phone := r.FormValue("phone")
+	code := r.FormValue("code")
+
+	if phone == "" || code == "" {
+		w.Write([]byte(fmt.Sprintf("enter phone and code")))
+		return
+
+	}
+
+	if user, err := marketHandler.marketRepo.MarketerVerify(phone, code); err != nil {
+		fmt.Println("Error", user)
+	}
+
+	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 123})
+
+	w.Write([]byte(fmt.Sprintf("token %v \n", tokenString)))
 }

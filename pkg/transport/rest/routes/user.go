@@ -8,7 +8,7 @@ import (
 // UserRouter : handle all user routes
 func UserRouter(router chi.Router, userHandler *business.UserHandler) chi.Router {
 
-	router.Get("/api/v1/user", userHandler.HelloUser)
+	//router.Get("/api/v1/user", userHandler.HelloUser)
 
 	return router
 }

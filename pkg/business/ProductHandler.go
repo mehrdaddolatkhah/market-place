@@ -1,9 +1,6 @@
 package business
 
 import (
-	"fmt"
-	"net/http"
-
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain"
 )
 
@@ -17,13 +14,4 @@ func NewProductHandler(productRepo domain.ProductRepository) *ProductHandler {
 	return &ProductHandler{
 		productRepo: productRepo,
 	}
-}
-
-// HelloProduct returns Hello, World
-func (h *ProductHandler) HelloProduct(w http.ResponseWriter, r *http.Request) {
-	if user, err := h.productRepo.FindByID(1); err != nil {
-		fmt.Println("Error", user)
-	}
-
-	w.Write([]byte("Hello, Product"))
 }

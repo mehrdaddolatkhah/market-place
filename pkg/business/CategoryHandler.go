@@ -1,7 +1,6 @@
 package business
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain"
@@ -21,9 +20,6 @@ func NewCategoryHandler(categoryRepo domain.CategoryRepository) *CategoryHandler
 
 // HelloCategory returns Hello, World
 func (h *CategoryHandler) HelloCategory(w http.ResponseWriter, r *http.Request) {
-	if user, err := h.categoryRepo.FindByID(1); err != nil {
-		fmt.Println("Error", user)
-	}
 
 	w.Write([]byte("Hello, Category"))
 }

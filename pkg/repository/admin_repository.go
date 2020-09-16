@@ -1,8 +1,7 @@
 package repository
 
 import (
-	"os/user"
-
+	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain/database"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -18,12 +17,8 @@ func NewAdminRepo(db *mongo.Client) *AdminRepo {
 	}
 }
 
-// FindByID ..
-func (r *AdminRepo) FindByID(ID int) (*user.User, error) {
-	return &user.User{}, nil
-}
+// AdminLogin ...
+func (r *AdminRepo) AdminLogin(phone string, code string) (*database.Admin, error) {
 
-// Save ..
-func (r *AdminRepo) Save(user *user.User) error {
-	return nil
+	return nil, nil
 }

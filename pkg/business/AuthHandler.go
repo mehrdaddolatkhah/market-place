@@ -63,8 +63,4 @@ func (authHandler *AuthHandler) Verify(w http.ResponseWriter, r *http.Request) {
 	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": 123})
 
 	w.Write([]byte(fmt.Sprintf("token %v \n", tokenString)))
-
-	// encodedToken := utils.TokenExtractor(jwtauth.TokenFromHeader(r))
-	// w.Write([]byte(fmt.Sprintf("token %v \n", encodedToken)))
-
 }

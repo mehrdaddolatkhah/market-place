@@ -8,7 +8,7 @@ import (
 // MarketRouter : handle all market routes
 func MarketRouter(router chi.Router, marketHandler *business.MarketHandler) chi.Router {
 
-	router.Get("/api/v1/market", marketHandler.HelloMarket)
+	router.Get("/api/v1/market", marketHandler.MarketerLogin)
 
 	return router
 }

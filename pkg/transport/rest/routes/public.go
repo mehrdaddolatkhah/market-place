@@ -8,8 +8,15 @@ import (
 // PublicRouter : handle all user routes
 func PublicRouter(router chi.Router, userHandler *business.AuthHandler) chi.Router {
 
-	router.Post("/login", userHandler.Login)
+	// Login for admin
+	router.Post("/admin/login", userHandler.Login)
 
+	// Login and Verify for marketer
+	router.Post("/market/login", userHandler.Verify)
+	router.Post("/market/verify", userHandler.Verify)
+
+	// Login and Verify for normal users
+	router.Post("/login", userHandler.Login)
 	router.Post("/verify", userHandler.Verify)
 
 	return router
