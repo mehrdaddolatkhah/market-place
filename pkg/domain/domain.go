@@ -2,6 +2,7 @@ package domain
 
 import (
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain/database"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type UserRepository interface {
@@ -17,6 +18,7 @@ type MarketRepository interface {
 
 type AdminRepository interface {
 	AdminLogin(phone string, password string) (*database.Admin, error)
+	AdminRegister(*database.Admin) (*mongo.InsertOneResult, error)
 }
 
 type CategoryRepository interface {

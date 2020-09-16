@@ -68,7 +68,8 @@ func RouteHandler(client *mongo.Client) http.Handler {
 
 	// Public routes
 	router.Group(func(r chi.Router) {
-		r.Mount("/api/v1", routes.PublicRouter(router, authHandler))
+
+		r.Mount("/api/v1", routes.PublicRouter(router, authHandler, adminHandler))
 	})
 
 	return router

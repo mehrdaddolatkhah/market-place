@@ -8,7 +8,7 @@ const ADMIN_COLLECTION string = "admin"
 
 // Admin defines the storage form of a beer
 type Admin struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"-"`
 	Phone     string             `bson:"phone,omitempty" json:"phone"`
 	Username  string             `bson:"username,omitempty" json:"username"`
 	Firstname string             `bson:"firstname,omitempty" json:"first_name"`

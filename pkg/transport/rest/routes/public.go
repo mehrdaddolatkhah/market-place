@@ -6,14 +6,14 @@ import (
 )
 
 // PublicRouter : handle all user routes
-func PublicRouter(router chi.Router, userHandler *business.AuthHandler) chi.Router {
+func PublicRouter(router chi.Router, userHandler *business.AuthHandler, adminHandler *business.AdminHandler) chi.Router {
 
 	// Login for admin
-	router.Post("/admin/login", userHandler.Login)
+	router.Post("/login/admin", adminHandler.AdminLogin)
 
 	// Login and Verify for marketer
-	router.Post("/market/login", userHandler.Verify)
-	router.Post("/market/verify", userHandler.Verify)
+	router.Post("/login/market", userHandler.Verify)
+	router.Post("/verify/market", userHandler.Verify)
 
 	// Login and Verify for normal users
 	router.Post("/login", userHandler.Login)
