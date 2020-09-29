@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/mehrdaddolatkhah/cafekala_server/pkg/business/utils"
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain"
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain/database"
 )
@@ -36,7 +37,8 @@ func (handler *AdminHandler) AdminRegister(w http.ResponseWriter, r *http.Reques
 
 	handler.adminRepo.AdminRegister(&admin)
 
-	w.Write([]byte(fmt.Sprintf("admin %v \n", admin)))
+	//w.Write([]byte(fmt.Sprintf("admin %v \n", admin)))
+	utils.RespondJSON(w, 201, true, "", admin)
 }
 
 // AdminLogin , in this fucntion we will login as admin
