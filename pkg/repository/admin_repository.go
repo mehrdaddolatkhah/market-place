@@ -32,12 +32,12 @@ func (r *AdminRepo) AdminRegister(admin *database.Admin) (*mongo.InsertOneResult
 }
 
 // AdminLogin ...
-func (r *AdminRepo) AdminLogin(phone string, code string) (database.Admin, error) {
+func (r *AdminRepo) AdminLogin(phone string, password string) (database.Admin, error) {
 
 	admin := database.Admin{}
 	adminCollection := r.db.Database(DatabaseName).Collection(database.ADMIN_COLLECTION)
 
-	err := adminCollection.FindOne(context.TODO(), bson.M{"phone": phone, "password": code}).Decode(&admin)
+	err := adminCollection.FindOne(context.TODO(), bson.M{"phone": phone, "password": password}).Decode(&admin)
 
 	if err != nil {
 		return admin, err

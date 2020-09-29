@@ -36,8 +36,6 @@ func (handler *AdminHandler) AdminRegister(w http.ResponseWriter, r *http.Reques
 	defer r.Body.Close()
 
 	handler.adminRepo.AdminRegister(&admin)
-
-	//w.Write([]byte(fmt.Sprintf("admin %v \n", admin)))
 	utils.RespondJSON(w, 201, true, "", admin)
 }
 
@@ -46,17 +44,24 @@ func (handler *AdminHandler) AdminLogin(w http.ResponseWriter, r *http.Request) 
 
 	admin := database.Admin{}
 
-	username := r.FormValue("username")
+	phone := r.FormValue("phone")
 	password := r.FormValue("password")
 
-	if username == "" || password == "" {
-		w.Write([]byte(fmt.Sprintf("enter username and password")))
+	if phone == "" || password == "" {
+		utils.RespondJSON(w, 400, false, "phone or password are empty", nil)
 		return
 	}
 
-	admin, _ = handler.adminRepo.AdminLogin(username, password)
+	admin, _ = handler.adminRepo.AdminLogin(phone, password)
+
+	if admin.Phone == "" || admin.Password == "" {
+		utils.RespondJSON(w, 403, false, "not found", nil)
+		return
+	}
 
 	//encodedToken := utils.TokenExtractor(jwtauth.TokenFromHeader(r))
-	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": admin})
-	w.Write([]byte(fmt.Sprintf("data %v \n", tokenString)))
+	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"id": admin.ID})
+
+	utils.RespondJSON(w, 200, true, "success", tokenString)
+
 }
