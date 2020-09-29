@@ -17,7 +17,7 @@ type MarketRepository interface {
 }
 
 type AdminRepository interface {
-	AdminLogin(phone string, password string) (*database.Admin, error)
+	AdminLogin(phone string, password string) (database.Admin, error)
 	AdminRegister(*database.Admin) (*mongo.InsertOneResult, error)
 }
 

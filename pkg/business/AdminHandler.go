@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/go-chi/jwtauth"
-	"github.com/mehrdaddolatkhah/cafekala_server/pkg/business/utils"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain"
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain/database"
 )
@@ -43,6 +42,8 @@ func (handler *AdminHandler) AdminRegister(w http.ResponseWriter, r *http.Reques
 // AdminLogin , in this fucntion we will login as admin
 func (handler *AdminHandler) AdminLogin(w http.ResponseWriter, r *http.Request) {
 
+	admin := database.Admin{}
+
 	username := r.FormValue("username")
 	password := r.FormValue("password")
 
@@ -51,9 +52,9 @@ func (handler *AdminHandler) AdminLogin(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	fmt.Println("we are in login admin")
-	handler.adminRepo.AdminLogin(username, password)
+	admin, _ = handler.adminRepo.AdminLogin(username, password)
 
-	encodedToken := utils.TokenExtractor(jwtauth.TokenFromHeader(r))
-	w.Write([]byte(fmt.Sprintf("data %v \n", encodedToken)))
+	//encodedToken := utils.TokenExtractor(jwtauth.TokenFromHeader(r))
+	_, tokenString, _ := tokenAuth.Encode(jwt.MapClaims{"user_id": admin})
+	w.Write([]byte(fmt.Sprintf("data %v \n", tokenString)))
 }

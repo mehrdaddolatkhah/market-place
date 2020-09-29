@@ -1,10 +1,10 @@
 package repository
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/mehrdaddolatkhah/cafekala_server/pkg/domain/database"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/net/context"
 )
@@ -32,18 +32,16 @@ func (r *AdminRepo) AdminRegister(admin *database.Admin) (*mongo.InsertOneResult
 }
 
 // AdminLogin ...
-func (r *AdminRepo) AdminLogin(phone string, code string) (*database.Admin, error) {
+func (r *AdminRepo) AdminLogin(phone string, code string) (database.Admin, error) {
 
 	admin := database.Admin{}
-
 	adminCollection := r.db.Database(DatabaseName).Collection(database.ADMIN_COLLECTION)
 
-	err := adminCollection.FindOne(context.TODO(), "bson").Decode(&admin)
+	err := adminCollection.FindOne(context.TODO(), bson.M{"phone": phone, "password": code}).Decode(&admin)
 
-	fmt.Println(err)
 	if err != nil {
-		return nil, err
+		return admin, err
 	}
 
-	return &admin, nil
+	return admin, nil
 }
